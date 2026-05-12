@@ -1,0 +1,12 @@
+[submodule "vp-tests"]
+	path = vp-tests
+	url = https://github.com/sohambagchi/CudaCacheInvalidationPenalty
+[submodule "grace-litmus"]
+	path = grace-litmus
+	url = git@github.com:herd/herdtools7.git
+[submodule "hopper-litmus"]
+	path = hopper-litmus
+	url = git@github.com:sohambagchi/cuda-litmus.git
+[submodule "gh-litmus"]
+	path = gh-litmus
+	url = git@github.com:icsa-caps/cudaSingleInstanceLitmusSuite.git
