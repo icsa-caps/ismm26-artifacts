@@ -46,7 +46,44 @@ git submodule update --init --recursive
 
 # Running Grace Litmus Tests
 
-The `grace-litmus` directory hosts the `herdtools7` suite, out of which we require diyone7 and litmus7. 
+The `grace-litmus` directory hosts the `herdtools7` suite, out of which we require diyone7 and litmus7. Follow their included build instructions (`README.md`, `INSTALL.md`), and then do the following to run the specific Message-Passing Litmus Test 
+
+## Generating Litmus Tests
+
+```
+diyone7 -arch AArch64 -name MP-rlx-rlx PodWW Rfe PodRR Fre
+diyone7 -arch AArch64 -name MP-rlx-rel PodWW L Rfe PodRR Fre
+diyone7 -arch AArch64 -name MP-rlx-rlx-acqrcsc PodWW Rfe A PodRR Fre
+diyone7 -arch AArch64 -name MP-rlx-rlx-acqrcpc PodWW Rfe Q PodRR Fre
+diyone7 -arch AArch64 -name MP-rlx-rel-acqrcsc PodWW L Rfe A PodRR Fre
+diyone7 -arch AArch64 -name MP-rlx-rel-acqrcpc PodWW L Rfe Q PodRR Fre
+
+mkdir -p mp-gen
+cat <<'EOF' | diyone7 -arch AArch64 -o mp-gen
+MP-rlx-fence-rlx: DMB.SYdWW Rfe PodRR Fre
+MP-rlx-fence-rlx-fence: DMB.SYdWW Rfe DMB.SYdRR Fre
+MP-rlx-rlx-rlx-fence: PodWW Rfe DMB.SYdRR Fre
+EOF
+```
+
+For each generated `.litmus` file, make 3 copies and set: 
+
+```
+Uncached:
+Prefetch=0:x=F,0:y=F,1:x=F,1:y=F
+Cached:
+Prefetch=0:x=T,0:y=T,1:x=T,1:y=T
+Modified:
+Prefetch=0:x=W,0:y=W,1:x=W,1:y=W
+```
+
+## Running Litmus Tests
+
+```
+litmus7 -set-libdir "$PWD/litmus/libdir" -o out/MP-rlx-rel-acqrcpc-uncached mp-tests/MP-rlx-rel-acqrcpc-uncached.litmus
+make -C out/MP-rlx-rel-acqrcpc-uncached -j"$(nproc)"
+sh out/MP-rlx-rel-acqrcpc-uncached/run.sh
+```
 
 # Running Hopper Litmus Tests
 
