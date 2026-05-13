@@ -10,3 +10,6 @@
 [submodule "gh-litmus"]
 	path = gh-litmus
 	url = git@github.com:icsa-caps/cudaSingleInstanceLitmusSuite.git
+[submodule "rmw-tests"]
+	path = rmw-tests
+	url = https://github.com/sohambagchi/CudaShMemPingPong.git

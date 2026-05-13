@@ -73,5 +73,25 @@ python3 run-all.py
 
 Similar to the _Hopper Litmus Tests_, the Grace-Hopper litmus tests also run in an infinite loop and need to be terminated manually using `Ctrl+C`. 
 
+
+# Running Read-Modify-Write Tests
+
+```
+cd rmw-tests
+make
+python3 pingpong_loop.py
+```
+
 # Running Value Propagation Tests
+
+```
+cd vp-tests
+make all
+./bin/cache_invalidation_testing_DATA_SIZE_32.out -P hopper_vp_invalidation_check -F configs/paper_hopper_write_through.yaml -m cuda_malloc
+./bin/cache_invalidation_testing_DATA_SIZE_32.out -P hopper_vp_self_invalidation -F configs/paper_hopper_self_invalidation.yaml -m cuda_malloc
+./bin/cache_invalidation_testing_DATA_SIZE_32.out -P grace_hopper_cpu_to_gpu -F configs/paper_gh_cpu_to_gpu.yaml -m malloc
+./bin/cache_invalidation_testing_DATA_SIZE_32.out -P grace_hopper_gpu_to_cpu -F configs/paper_gh_gpu_to_cpu.yaml -m malloc
+```
+
+> The heterogenous tests will only work on NVIDIA Grace-Hopper. On other NVIDIA architectures, you can vary the `-m <um|dram>` for heterogeneous tests. 
 
